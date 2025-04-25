@@ -9,6 +9,7 @@ import { UpdatePostDto } from '../dto/update-post.dto';
 import { UpdatePostCommand } from '../repository/command/update-post.command';
 import { DeletePostDto } from '../dto/delete-post.dto';
 import { DeletePostCommand } from '../repository/command/delete-post.command';
+import { CountType } from '../../../shared/type/count.type';
 
 @Injectable()
 export class PostService {
@@ -45,7 +46,7 @@ export class PostService {
     async updatePost(postId: number, dto: UpdatePostDto): Promise<void> {
         const { password_hash, ...post } = dto;
 
-        const { count }: { count: number } = await this.updatePostCommand.updatePostByIdAndPassword(
+        const { count }: CountType = await this.updatePostCommand.updatePostByIdAndPassword(
             postId,
             password_hash,
             post
@@ -61,10 +62,7 @@ export class PostService {
     async deletePost(postId: number, dto: DeletePostDto): Promise<void> {
         const { password_hash, ...post } = dto;
 
-        const { count }: { count: number } = await this.deletePostCommand.deletePostByIdAndPassword(
-            postId,
-            password_hash
-        );
+        const { count }: CountType = await this.deletePostCommand.deletePostByIdAndPassword(postId, password_hash);
 
         if (!count) {
             throw new NotFoundException(
