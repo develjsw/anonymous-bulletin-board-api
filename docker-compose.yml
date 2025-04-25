@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: wanted-mysql
+    ports:
+      - '3366:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: wanted_root
+      MYSQL_DATABASE: wanted
+      MYSQL_USER: wanted_user
+      MYSQL_PASSWORD: wanted_password
+    volumes:
+      - ./mysql-init.sql:/docker-entrypoint-initdb.d/mysql-init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
