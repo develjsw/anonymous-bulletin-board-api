@@ -5,6 +5,7 @@ import { ListResponseType } from '../../shared/type/list-response.type';
 import { posts as PostModel } from '../../../prisma/generated/master-client';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
+import { DeletePostDto } from './dto/delete-post.dto';
 
 @Controller('posts')
 export class PostController {
@@ -30,5 +31,7 @@ export class PostController {
 
     // 게시글 삭제 (비밀번호 확인)
     @Delete(':pid')
-    async deletePost(): Promise<void> {}
+    async deletePost(@Param('pid', ParseIntPipe) postId: number, @Body() dto: DeletePostDto): Promise<void> {
+        await this.postService.deletePost(postId, dto);
+    }
 }

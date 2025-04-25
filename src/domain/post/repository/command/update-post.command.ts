@@ -10,8 +10,8 @@ export class UpdatePostCommand {
         post_id: number,
         password_hash: string,
         data: Omit<Prisma.postsUpdateInput, 'post_id' | 'password_hash'>
-    ): Promise<void> {
-        await this.prismaMasterClientService.posts.update({
+    ): Promise<{ count: number }> {
+        return this.prismaMasterClientService.posts.updateMany({
             data,
             where: {
                 post_id,

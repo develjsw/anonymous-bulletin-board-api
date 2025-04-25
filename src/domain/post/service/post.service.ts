@@ -7,13 +7,16 @@ import { CreatePostDto } from '../dto/create-post.dto';
 import { CreatePostCommand } from '../repository/command/create-post.command';
 import { UpdatePostDto } from '../dto/update-post.dto';
 import { UpdatePostCommand } from '../repository/command/update-post.command';
+import { DeletePostDto } from '../dto/delete-post.dto';
+import { DeletePostCommand } from '../repository/command/delete-post.command';
 
 @Injectable()
 export class PostService {
     constructor(
         private readonly getPostQuery: GetPostQuery,
         private readonly createPostCommand: CreatePostCommand,
-        private readonly updatePostCommand: UpdatePostCommand
+        private readonly updatePostCommand: UpdatePostCommand,
+        private readonly deletePostCommand: DeletePostCommand
     ) {}
 
     async getPostsWithPaging(dto: GetPostsDto): Promise<ListResponseType<PostModel>> {
@@ -42,8 +45,31 @@ export class PostService {
     async updatePost(postId: number, dto: UpdatePostDto): Promise<void> {
         const { password_hash, ...post } = dto;
 
-        // TODO : 조회를 한번 더 호출하고 진행할지, 아니면 수정을 바로 진행하되 일치하는 데이터 없을 때(=P2025 Error) 404 Error 처리할지 결정 필요
+        const { count }: { count: number } = await this.updatePostCommand.updatePostByIdAndPassword(
+            postId,
+            password_hash,
+            post
+        );
 
-        await this.updatePostCommand.updatePostByIdAndPassword(postId, password_hash, post);
+        if (!count) {
+            throw new NotFoundException(
+                '비밀번호가 일치하지 않거나, 일치하는 게시글이 존재하지 않아 수정할 수 없습니다'
+            );
+        }
+    }
+
+    async deletePost(postId: number, dto: DeletePostDto): Promise<void> {
+        const { password_hash, ...post } = dto;
+
+        const { count }: { count: number } = await this.deletePostCommand.deletePostByIdAndPassword(
+            postId,
+            password_hash
+        );
+
+        if (!count) {
+            throw new NotFoundException(
+                '비밀번호가 일치하지 않거나, 일치하는 게시글이 존재하지 않아 삭제할 수 없습니다'
+            );
+        }
     }
 }
