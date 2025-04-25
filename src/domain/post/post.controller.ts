@@ -1,9 +1,10 @@
-import { Body, Controller, Delete, Get, Patch, Post, Query } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post, Query } from '@nestjs/common';
 import { PostService } from './service/post.service';
 import { GetPostsDto } from './dto/get-posts.dto';
 import { ListResponseType } from '../../shared/type/list-response.type';
 import { posts as PostModel } from '../../../prisma/generated/master-client';
 import { CreatePostDto } from './dto/create-post.dto';
+import { UpdatePostDto } from './dto/update-post.dto';
 
 @Controller('posts')
 export class PostController {
@@ -23,7 +24,9 @@ export class PostController {
 
     // 게시글 수정 (비밀번호 확인)
     @Patch(':pid')
-    async updatePost(@Body() dto: any): Promise<void> {}
+    async updatePost(@Param('pid', ParseIntPipe) postId: number, @Body() dto: UpdatePostDto): Promise<void> {
+        await this.postService.updatePost(postId, dto);
+    }
 
     // 게시글 삭제 (비밀번호 확인)
     @Delete(':pid')
