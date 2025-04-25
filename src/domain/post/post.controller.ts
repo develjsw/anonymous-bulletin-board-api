@@ -3,6 +3,7 @@ import { PostService } from './service/post.service';
 import { GetPostsDto } from './dto/get-posts.dto';
 import { ListResponseType } from '../../shared/type/list-response.type';
 import { posts as PostModel } from '../../../prisma/generated/master-client';
+import { CreatePostDto } from './dto/create-post.dto';
 
 @Controller('posts')
 export class PostController {
@@ -16,7 +17,9 @@ export class PostController {
 
     // 게시글 작성
     @Post()
-    async createPost(@Body() dto: any): Promise<void> {}
+    async createPost(@Body() dto: CreatePostDto): Promise<void> {
+        await this.postService.createPost(dto);
+    }
 
     // 게시글 수정 (비밀번호 확인)
     @Patch(':pid')
