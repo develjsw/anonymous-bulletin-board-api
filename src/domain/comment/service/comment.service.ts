@@ -24,6 +24,7 @@ export class CommentService {
 
         const { content, commentId } = await this.createCommentCommand.createComment(comment);
 
+        // 키워드 매칭 알림 생성
         await this.keywordAlertService.sendAlertForText(content, {
             type: 'comment',
             id: commentId
@@ -48,6 +49,7 @@ export class CommentService {
         const createCommentResult: CommentEntity = await this.createCommentCommand.createComment(comment);
         const { content } = createCommentResult;
 
+        // 키워드 매칭 알림 생성
         await this.keywordAlertService.sendAlertForText(content, {
             type: 'comment',
             id: commentId

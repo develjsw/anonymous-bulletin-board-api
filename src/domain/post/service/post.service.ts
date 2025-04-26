@@ -38,7 +38,7 @@ export class PostService {
         const createPostResult: PostEntity = await this.createPostCommand.createPost(plainToInstance(PostEntity, dto));
         const { postId, title, content } = createPostResult;
 
-        // 키워드 알림 등록
+        // 키워드 매칭 알림 생성
         const text = `${title}\n${content}`;
         await this.keywordAlertService.sendAlertForText(text, {
             type: 'post',
