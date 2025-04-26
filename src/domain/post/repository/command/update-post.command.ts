@@ -10,9 +10,12 @@ export class UpdatePostCommand {
     async updatePostByIdAndPassword(
         post_id: number,
         password_hash: string,
-        data: Omit<Prisma.postsUpdateInput, 'post_id' | 'password_hash'>
+        data: Omit<Prisma.postsUpdateInput, 'post_id' | 'password_hash'>,
+        transaction?: Prisma.TransactionClient
     ): Promise<CountType> {
-        return this.prismaMasterClientService.posts.updateMany({
+        const prisma: Prisma.TransactionClient = transaction ?? this.prismaMasterClientService;
+
+        return prisma.posts.updateMany({
             data,
             where: {
                 post_id,

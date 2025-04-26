@@ -6,8 +6,13 @@ import { Prisma } from '../../../../../prisma/generated/master-client';
 export class CreatePostCommand {
     constructor(private readonly prismaMasterClientService: PrismaMasterClientService) {}
 
-    async createPost(data: Omit<Prisma.postsCreateInput, 'post_id'>): Promise<void> {
-        await this.prismaMasterClientService.posts.create({
+    async createPost(
+        data: Omit<Prisma.postsCreateInput, 'post_id'>,
+        transaction?: Prisma.TransactionClient
+    ): Promise<void> {
+        const prisma: Prisma.TransactionClient = transaction ?? this.prismaMasterClientService;
+
+        await prisma.posts.create({
             data
         });
     }

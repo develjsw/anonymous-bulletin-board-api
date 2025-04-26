@@ -1,15 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaMasterClientService } from '../../../../shared/prisma/service/prisma-master-client.service';
-import { comments as CommentModel, Prisma } from '../../../../../prisma/generated/master-client';
+import { comments as CommentModel } from '../../../../../prisma/generated/master-client';
 
 @Injectable()
 export class GetCommentQuery {
     constructor(private readonly prismaMasterClientService: PrismaMasterClientService) {}
 
-    async findCommentById(comment_id: number, transaction?: Prisma.TransactionClient): Promise<CommentModel> {
-        const prisma: Prisma.TransactionClient = transaction ?? this.prismaMasterClientService;
-
-        return prisma.comments.findUnique({
+    async findCommentById(comment_id: number): Promise<CommentModel> {
+        return this.prismaMasterClientService.comments.findUnique({
             where: {
                 comment_id
             }
