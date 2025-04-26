@@ -16,7 +16,7 @@ export class PostController {
     // 게시글 목록 (검색, 페이징)
     @Get()
     @ApiOperation({ summary: '게시글 목록 조회', description: '검색 및 페이징을 통해 게시글 목록을 조회합니다.' })
-    @ApiResponse({ status: 200, description: '게시글 목록 조회 성공', type: [PostEntity] })
+    @ApiResponse({ status: 200, description: '게시글 목록 조회 성공' })
     async getPostsWithPaging(@Query() dto: GetPostsDto): Promise<ListResponseType<PostEntity>> {
         return this.postService.getPostsWithPaging(dto);
     }

@@ -22,7 +22,7 @@ export class PostCommentController {
     // 특정 게시글의 댓글 목록
     @Get()
     @ApiOperation({ summary: '댓글 목록 조회', description: '특정 게시글에 달린 댓글 목록을 페이징하여 조회합니다.' })
-    @ApiResponse({ status: 200, description: '댓글 목록 조회 성공', type: [CommentEntity] })
+    @ApiResponse({ status: 200, description: '댓글 목록 조회 성공' })
     async getCommentsWithPaging(
         @Param('postId', ParseIntPipe) postId: number,
         @Query() dto: GetCommentsDto
