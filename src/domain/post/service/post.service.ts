@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { GetPostQuery } from '../repository/query/get-post.query';
 import { GetPostsDto } from '../dto/get-posts.dto';
 import { ListResponseType } from '../../../shared/type/list-response.type';
@@ -39,7 +39,7 @@ export class PostService {
         const text = `${title}\n${content}`;
         await this.keywordAlertService.sendAlertForText(text, {
             type: 'post',
-            id: Number(postId)
+            id: postId
         });
     }
 

@@ -26,7 +26,7 @@ export class CommentService {
 
         await this.keywordAlertService.sendAlertForText(content, {
             type: 'comment',
-            id: Number(commentId)
+            id: commentId
         });
     }
 
@@ -51,7 +51,7 @@ export class CommentService {
 
         await this.keywordAlertService.sendAlertForText(content, {
             type: 'comment',
-            id: Number(commentId)
+            id: commentId
         });
     }
 
