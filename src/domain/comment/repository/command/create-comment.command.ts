@@ -18,18 +18,16 @@ export class CreateCommentCommand implements CommentCreateCommandInterface {
     ): Promise<CommentEntity> {
         const prisma: Prisma.TransactionClient = transaction ?? this.prismaMasterClientService;
 
-        try {
-            return prisma.comments.create({
+        return prisma.comments
+            .create({
                 data
-            });
-        } catch (error) {
-            if (
-                error instanceof Prisma.PrismaClientKnownRequestError &&
-                (error.code === 'P2025' || error.code === 'P2003')
-            ) {
-                throw new NotFoundException('게시글 또는 부모 댓글을 찾을 수 없습니다');
-            }
-            throw error;
-        }
+            })
+            .catch((error) => {
+                if (error?.code === 'P2025' || error?.code === 'P2003') {
+                    throw new NotFoundException('게시글 또는 부모 댓글을 찾을 수 없습니다');
+                }
+                throw error;
+            })
+            .then((result) => result);
     }
 }
