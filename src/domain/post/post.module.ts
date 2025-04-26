@@ -6,7 +6,7 @@ import { PrismaModule } from '../../shared/prisma/prisma.module';
 import { CreatePostCommand } from './repository/command/create-post.command';
 import { UpdatePostCommand } from './repository/command/update-post.command';
 import { DeletePostCommand } from './repository/command/delete-post.command';
-import { KeywordAlertModule } from '../keyword_alert/keyword-alert.module';
+import { KeywordAlertModule } from '../keyword-alert/keyword-alert.module';
 
 @Module({
     imports: [PrismaModule, KeywordAlertModule],

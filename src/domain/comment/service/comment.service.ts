@@ -6,8 +6,8 @@ import { CreateCommentReplyDto } from '../dto/create-comment-reply.dto';
 import { GetCommentsDto } from '../dto/get-comments.dto';
 import { ListResponseType } from '../../../shared/type/list-response.type';
 import { CommentEntity } from '../entity/comment.entity';
-import { KEYWORD_ALERT_SERVICE } from '../../keyword_alert/constant/keyword-alert.constant';
-import { KeywordAlertServiceInterface } from '../../keyword_alert/interface/keyword-alert-service.interface';
+import { KEYWORD_ALERT_SERVICE } from '../../keyword-alert/constant/keyword-alert.constant';
+import { KeywordAlertServiceInterface } from '../../keyword-alert/interface/keyword-alert-service.interface';
 
 @Injectable()
 export class CommentService {

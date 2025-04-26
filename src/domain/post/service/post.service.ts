@@ -10,8 +10,8 @@ import { DeletePostDto } from '../dto/delete-post.dto';
 import { DeletePostCommand } from '../repository/command/delete-post.command';
 import { PostEntity } from '../entity/post.entity';
 import { plainToInstance } from 'class-transformer';
-import { KEYWORD_ALERT_SERVICE } from '../../keyword_alert/constant/keyword-alert.constant';
-import { KeywordAlertServiceInterface } from '../../keyword_alert/interface/keyword-alert-service.interface';
+import { KEYWORD_ALERT_SERVICE } from '../../keyword-alert/constant/keyword-alert.constant';
+import { KeywordAlertServiceInterface } from '../../keyword-alert/interface/keyword-alert-service.interface';
 
 @Injectable()
 export class PostService {
