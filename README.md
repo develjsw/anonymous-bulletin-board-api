@@ -19,6 +19,9 @@ $ npm run master:prisma:generate
 
 # Node.js Server 실행
 $ npm run start:debug
+
+# 정상 실행 확인
+# 서버가 정상적으로 실행되면 http://localhost:9999 에 접속하여 확인할 수 있습니다.
 ~~~
 
 ### 프로젝트 주요 설계
