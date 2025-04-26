@@ -5,6 +5,7 @@ import * as path from 'path';
 import { ConfigModule } from '@nestjs/config';
 import { PostModule } from './domain/post/post.module';
 import { CommentModule } from './domain/comment/comment.module';
+import { KeywordAlertModule } from './domain/keyword_alert/keyword-alert.module';
 
 let envFile = 'env.local';
 switch (process.env.NODE_ENV) {
@@ -24,7 +25,8 @@ switch (process.env.NODE_ENV) {
             cache: true
         }),
         PostModule,
-        CommentModule
+        CommentModule,
+        KeywordAlertModule
     ],
     controllers: [AppController],
     providers: [AppService]
