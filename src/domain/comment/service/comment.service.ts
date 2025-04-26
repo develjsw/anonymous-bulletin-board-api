@@ -26,7 +26,7 @@ export class CommentService {
 
         // 댓글 무한 depth 방지 (추후 확장 원할때 주석처리)
         if (parent_id) {
-            throw new BadRequestException('댓글은 대댓글까지만 가능합니다');
+            throw new BadRequestException('대댓글에는 댓글을 달 수 없습니다');
         }
 
         if (!findCommentResult) {
