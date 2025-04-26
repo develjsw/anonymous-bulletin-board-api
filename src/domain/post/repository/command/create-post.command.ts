@@ -7,7 +7,7 @@ export class CreatePostCommand {
     constructor(private readonly prismaMasterClientService: PrismaMasterClientService) {}
 
     async createPost(
-        data: Omit<Prisma.postsCreateInput, 'post_id'>,
+        data: Omit<Prisma.postsCreateInput, 'postId'>,
         transaction?: Prisma.TransactionClient
     ): Promise<PostModel> {
         const prisma: Prisma.TransactionClient = transaction ?? this.prismaMasterClientService;

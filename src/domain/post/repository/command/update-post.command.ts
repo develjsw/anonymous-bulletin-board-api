@@ -7,9 +7,9 @@ export class UpdatePostCommand {
     constructor(private readonly prismaMasterClientService: PrismaMasterClientService) {}
 
     async updatePostByIdAndPassword(
-        post_id: number,
-        password_hash: string,
-        data: Omit<Prisma.postsUpdateInput, 'post_id' | 'password_hash'>,
+        postId: number,
+        password: string,
+        data: Omit<Prisma.postsUpdateInput, 'postId' | 'password'>,
         transaction?: Prisma.TransactionClient
     ): Promise<void> {
         const prisma: Prisma.TransactionClient = transaction ?? this.prismaMasterClientService;
@@ -17,8 +17,8 @@ export class UpdatePostCommand {
         const { count } = await prisma.posts.updateMany({
             data,
             where: {
-                post_id,
-                password_hash
+                postId,
+                password
             }
         });
 

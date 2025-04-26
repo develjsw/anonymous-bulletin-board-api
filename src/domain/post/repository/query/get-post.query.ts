@@ -25,7 +25,7 @@ export class GetPostQuery {
             skip: (page - 1) * perPage,
             take: perPage,
             orderBy: {
-                post_id: Prisma.SortOrder.desc
+                postId: Prisma.SortOrder.desc
             }
         });
 

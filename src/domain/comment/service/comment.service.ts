@@ -19,39 +19,39 @@ export class CommentService {
     ) {}
 
     async createComment(postId: number, dto: CreateCommentDto): Promise<void> {
-        const comment = { ...dto, post_id: postId };
+        const comment = { ...dto, postId: postId };
 
         const createCommentResult: CommentModel = await this.createCommentCommand.createComment(comment);
-        const { content, comment_id } = createCommentResult;
+        const { content, commentId } = createCommentResult;
 
         await this.keywordAlertService.sendAlertForText(content, {
             type: 'comment',
-            id: Number(comment_id)
+            id: Number(commentId)
         });
     }
 
-    async createCommentReply(parentId: number, dto: CreateCommentReplyDto): Promise<void> {
-        const findCommentResult: CommentModel = await this.getCommentQuery.findCommentById(parentId);
+    async createCommentReply(parentCommentId: number, dto: CreateCommentReplyDto): Promise<void> {
+        const findCommentResult: CommentModel = await this.getCommentQuery.findCommentById(parentCommentId);
 
         if (!findCommentResult) {
             throw new NotFoundException('부모 댓글을 찾을 수 없습니다');
         }
 
         // 댓글 무한 depth 방지 (추후 확장 원할때 주석처리)
-        const { parent_id } = findCommentResult;
-        if (parent_id) {
+        const { parentId } = findCommentResult;
+        if (parentId) {
             throw new BadRequestException('대댓글에는 댓글을 달 수 없습니다');
         }
 
-        const { comment_id, post_id } = findCommentResult;
-        const comment = { post_id, parent_id: comment_id, ...dto };
+        const { commentId, postId } = findCommentResult;
+        const comment = { postId, parentId: commentId, ...dto };
 
         const createCommentResult: CommentModel = await this.createCommentCommand.createComment(comment);
         const { content } = createCommentResult;
 
         await this.keywordAlertService.sendAlertForText(content, {
             type: 'comment',
-            id: Number(comment_id)
+            id: Number(commentId)
         });
     }
 

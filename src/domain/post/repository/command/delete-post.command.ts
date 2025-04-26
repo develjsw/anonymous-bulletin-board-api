@@ -7,16 +7,16 @@ export class DeletePostCommand {
     constructor(private readonly prismaMasterClientService: PrismaMasterClientService) {}
 
     async deletePostByIdAndPassword(
-        post_id: number,
-        password_hash: string,
+        postId: number,
+        password: string,
         transaction?: Prisma.TransactionClient
     ): Promise<void> {
         const prisma: Prisma.TransactionClient = transaction ?? this.prismaMasterClientService;
 
         const { count } = await prisma.posts.deleteMany({
             where: {
-                post_id,
-                password_hash
+                postId,
+                password
             }
         });
 

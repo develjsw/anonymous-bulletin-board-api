@@ -8,20 +8,20 @@ import { ListResponseType } from '../../../../shared/type/list-response.type';
 export class GetCommentQuery {
     constructor(private readonly prismaMasterClientService: PrismaMasterClientService) {}
 
-    async findCommentById(comment_id: number): Promise<CommentModel> {
+    async findCommentById(commentId: number): Promise<CommentModel> {
         return this.prismaMasterClientService.comments.findUnique({
             where: {
-                comment_id
+                commentId
             }
         });
     }
 
-    async findCommentsByPostIdWithPaging(post_id: number, paging: PagingType): Promise<ListResponseType<CommentModel>> {
+    async findCommentsByPostIdWithPaging(postId: number, paging: PagingType): Promise<ListResponseType<CommentModel>> {
         const { page, perPage } = paging;
 
         const where = {
-            post_id,
-            parent_id: null // 대댓글 제외
+            postId,
+            parentId: null // 대댓글 제외
         };
 
         const list: CommentModel[] = await this.prismaMasterClientService.comments.findMany({
@@ -29,11 +29,11 @@ export class GetCommentQuery {
             skip: (page - 1) * perPage,
             take: perPage,
             orderBy: {
-                comment_id: Prisma.SortOrder.desc
+                commentId: Prisma.SortOrder.desc
             },
             include: {
                 replies: {
-                    orderBy: { comment_id: Prisma.SortOrder.desc }
+                    orderBy: { commentId: Prisma.SortOrder.desc }
                 }
             }
         });

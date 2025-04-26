@@ -7,7 +7,7 @@ export class CreateCommentCommand {
     constructor(private readonly prismaMasterClientService: PrismaMasterClientService) {}
 
     async createComment(
-        data: Omit<Prisma.commentsUncheckedCreateInput, 'comment_id'>,
+        data: Omit<Prisma.commentsUncheckedCreateInput, 'commentId'>,
         transaction?: Prisma.TransactionClient
     ): Promise<CommentModel> {
         const prisma: Prisma.TransactionClient = transaction ?? this.prismaMasterClientService;

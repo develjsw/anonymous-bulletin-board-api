@@ -33,26 +33,25 @@ export class PostService {
     }
 
     async createPost(dto: CreatePostDto): Promise<void> {
-        // TODO : 비밀번호 암호화 로직 필요?
         const createPostResult: PostModel = await this.createPostCommand.createPost(dto);
-        const { post_id, title, content } = createPostResult;
+        const { postId, title, content } = createPostResult;
 
         const text = `${title}\n${content}`;
         await this.keywordAlertService.sendAlertForText(text, {
             type: 'post',
-            id: Number(post_id)
+            id: Number(postId)
         });
     }
 
     async updatePost(postId: number, dto: UpdatePostDto): Promise<void> {
-        const { password_hash, ...post } = dto;
+        const { password, ...post } = dto;
 
-        await this.updatePostCommand.updatePostByIdAndPassword(postId, password_hash, post);
+        await this.updatePostCommand.updatePostByIdAndPassword(postId, password, post);
     }
 
     async deletePost(postId: number, dto: DeletePostDto): Promise<void> {
-        const { password_hash } = dto;
+        const { password } = dto;
 
-        await this.deletePostCommand.deletePostByIdAndPassword(postId, password_hash);
+        await this.deletePostCommand.deletePostByIdAndPassword(postId, password);
     }
 }
