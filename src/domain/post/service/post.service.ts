@@ -22,15 +22,10 @@ export class PostService {
     async getPostsWithPaging(dto: GetPostsDto): Promise<ListResponseType<PostModel>> {
         const { page, perPage, ...post } = dto;
 
-        const { paging, list }: ListResponseType<PostModel> = await this.getPostQuery.findPostsWithPaging(post, {
+        return await this.getPostQuery.findPostsByConditionsWithPaging(post, {
             page,
             perPage
         });
-
-        return {
-            paging,
-            list
-        };
     }
 
     async createPost(dto: CreatePostDto): Promise<void> {

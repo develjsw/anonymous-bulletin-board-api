@@ -8,7 +8,10 @@ import { PagingType } from '../../../../shared/type/paging.type';
 export class GetPostQuery {
     constructor(private readonly prismaMasterClientService: PrismaMasterClientService) {}
 
-    async findPostsWithPaging(data: Prisma.postsWhereInput, paging: PagingType): Promise<ListResponseType<PostModel>> {
+    async findPostsByConditionsWithPaging(
+        data: Prisma.postsWhereInput,
+        paging: PagingType
+    ): Promise<ListResponseType<PostModel>> {
         const { title, writer } = data;
         const { page, perPage } = paging;
 

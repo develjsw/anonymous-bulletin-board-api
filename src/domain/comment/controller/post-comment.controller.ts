@@ -1,6 +1,9 @@
-import { Body, Controller, Get, Param, ParseIntPipe, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, ParseIntPipe, Post, Query } from '@nestjs/common';
 import { CreateCommentDto } from '../dto/create-comment.dto';
 import { CommentService } from '../service/comment.service';
+import { GetCommentsDto } from '../dto/get-comments.dto';
+import { ListResponseType } from '../../../shared/type/list-response.type';
+import { comments as CommentModel } from '../../../../prisma/generated/master-client';
 
 @Controller('posts/:pid/comments')
 export class PostCommentController {
@@ -14,5 +17,10 @@ export class PostCommentController {
 
     // 특정 게시글의 댓글 목록
     @Get()
-    async getComments(): Promise<void> {}
+    async getCommentsWithPaging(
+        @Param('pid', ParseIntPipe) postId: number,
+        @Query() dto: GetCommentsDto
+    ): Promise<ListResponseType<CommentModel>> {
+        return await this.commentService.getCommentsWithPaging(postId, dto);
+    }
 }

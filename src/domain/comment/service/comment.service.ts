@@ -4,6 +4,8 @@ import { CreateCommentDto } from '../dto/create-comment.dto';
 import { GetCommentQuery } from '../repository/query/get-comment.query';
 import { CreateCommentReplyDto } from '../dto/create-comment-reply.dto';
 import { comments as CommentModel } from '../../../../prisma/generated/master-client';
+import { GetCommentsDto } from '../dto/get-comments.dto';
+import { ListResponseType } from '../../../shared/type/list-response.type';
 
 @Injectable()
 export class CommentService {
@@ -29,5 +31,14 @@ export class CommentService {
         const comment = { post_id, parent_id: comment_id, ...dto };
 
         await this.createCommentCommand.createComment(comment);
+    }
+
+    async getCommentsWithPaging(postId: number, dto: GetCommentsDto): Promise<ListResponseType<CommentModel>> {
+        const { page, perPage } = dto;
+
+        return await this.getCommentQuery.findCommentsByPostIdWithPaging(postId, {
+            page,
+            perPage
+        });
     }
 }
