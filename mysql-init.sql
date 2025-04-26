@@ -1,5 +1,6 @@
 USE wanted;
 
+-- 게시글 테이블
 CREATE TABLE IF NOT EXISTS `posts` (
     `post_id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '게시글 ID ( PK )',
     `title` VARCHAR(100) NOT NULL DEFAULT '' COMMENT '제목' COLLATE 'utf8mb4_general_ci',
@@ -15,7 +16,7 @@ CREATE TABLE IF NOT EXISTS `posts` (
 COLLATE='utf8mb4_general_ci'
 ENGINE=InnoDB;
 
-
+-- 댓글 테이블
 CREATE TABLE IF NOT EXISTS `comments` (
     `comment_id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '댓글 ID ( PK )',
     `post_id` BIGINT(20) UNSIGNED NOT NULL COMMENT '게시글 ID ( posts.post_id )',
@@ -32,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `comments` (
 COLLATE='utf8mb4_general_ci'
 ENGINE=InnoDB;
 
-
+-- 키워드 알림 테이블
 CREATE TABLE IF NOT EXISTS `keyword_alerts` (
     `keyword_alert_id` BIGINT(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '키워드 알림 ID ( PK )',
     `writer` VARCHAR(50) NOT NULL DEFAULT '' COMMENT '작성자' COLLATE 'utf8mb4_general_ci',
