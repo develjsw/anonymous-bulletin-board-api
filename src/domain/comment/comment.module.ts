@@ -5,10 +5,10 @@ import { CommentService } from './service/comment.service';
 import { GetCommentQuery } from './repository/query/get-comment.query';
 import { CreateCommentCommand } from './repository/command/create-comment.command';
 import { PrismaModule } from '../../shared/prisma/prisma.module';
-import { PostModule } from '../post/post.module';
+import { KeywordAlertModule } from '../keyword_alert/keyword-alert.module';
 
 @Module({
-    imports: [PrismaModule, PostModule],
+    imports: [PrismaModule, KeywordAlertModule],
     controllers: [CommentController, PostCommentController],
     providers: [CommentService, GetCommentQuery, CreateCommentCommand],
     exports: [GetCommentQuery, CreateCommentCommand]

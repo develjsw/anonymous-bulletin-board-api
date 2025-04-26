@@ -9,6 +9,7 @@ import { UpdatePostDto } from '../dto/update-post.dto';
 import { UpdatePostCommand } from '../repository/command/update-post.command';
 import { DeletePostDto } from '../dto/delete-post.dto';
 import { DeletePostCommand } from '../repository/command/delete-post.command';
+import { KeywordAlertService } from '../../keyword_alert/service/keyword-alert.service';
 
 @Injectable()
 export class PostService {
@@ -16,7 +17,10 @@ export class PostService {
         private readonly getPostQuery: GetPostQuery,
         private readonly createPostCommand: CreatePostCommand,
         private readonly updatePostCommand: UpdatePostCommand,
-        private readonly deletePostCommand: DeletePostCommand
+        private readonly deletePostCommand: DeletePostCommand,
+
+        // TODO : DIP 적용 필요
+        private readonly keywordAlertService: KeywordAlertService
     ) {}
 
     async getPostsWithPaging(dto: GetPostsDto): Promise<ListResponseType<PostModel>> {
@@ -30,7 +34,14 @@ export class PostService {
 
     async createPost(dto: CreatePostDto): Promise<void> {
         // TODO : 비밀번호 암호화 로직 필요?
-        await this.createPostCommand.createPost(dto);
+        const createPostResult: PostModel = await this.createPostCommand.createPost(dto);
+        const { post_id, title, content } = createPostResult;
+
+        const text = `${title}\n${content}`;
+        await this.keywordAlertService.sendAlertForText(text, {
+            type: 'post',
+            id: Number(post_id)
+        });
     }
 
     async updatePost(postId: number, dto: UpdatePostDto): Promise<void> {

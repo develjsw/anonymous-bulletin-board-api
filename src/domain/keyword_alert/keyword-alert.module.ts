@@ -8,6 +8,6 @@ import { PrismaModule } from '../../shared/prisma/prisma.module';
     imports: [PrismaModule],
     controllers: [KeywordAlertController],
     providers: [KeywordAlertService, GetKeywordAlertQuery],
-    exports: [GetKeywordAlertQuery]
+    exports: [GetKeywordAlertQuery, KeywordAlertService]
 })
 export class KeywordAlertModule {}

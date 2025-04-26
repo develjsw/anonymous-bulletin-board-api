@@ -6,9 +6,10 @@ import { PrismaModule } from '../../shared/prisma/prisma.module';
 import { CreatePostCommand } from './repository/command/create-post.command';
 import { UpdatePostCommand } from './repository/command/update-post.command';
 import { DeletePostCommand } from './repository/command/delete-post.command';
+import { KeywordAlertModule } from '../keyword_alert/keyword-alert.module';
 
 @Module({
-    imports: [PrismaModule],
+    imports: [PrismaModule, KeywordAlertModule],
     controllers: [PostController],
     providers: [PostService, GetPostQuery, CreatePostCommand, UpdatePostCommand, DeletePostCommand],
     exports: [GetPostQuery, CreatePostCommand, UpdatePostCommand, DeletePostCommand]
