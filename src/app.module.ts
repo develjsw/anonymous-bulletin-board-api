@@ -4,6 +4,7 @@ import { AppService } from './app.service';
 import * as path from 'path';
 import { ConfigModule } from '@nestjs/config';
 import { PostModule } from './domain/post/post.module';
+import { CommentModule } from './domain/comment/comment.module';
 
 let envFile = 'env.local';
 switch (process.env.NODE_ENV) {
@@ -22,7 +23,8 @@ switch (process.env.NODE_ENV) {
             isGlobal: true,
             cache: true
         }),
-        PostModule
+        PostModule,
+        CommentModule
     ],
     controllers: [AppController],
     providers: [AppService]

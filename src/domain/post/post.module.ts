@@ -11,6 +11,6 @@ import { DeletePostCommand } from './repository/command/delete-post.command';
     imports: [PrismaModule],
     controllers: [PostController],
     providers: [PostService, GetPostQuery, CreatePostCommand, UpdatePostCommand, DeletePostCommand],
-    exports: []
+    exports: [GetPostQuery, CreatePostCommand, UpdatePostCommand, DeletePostCommand]
 })
 export class PostModule {}
