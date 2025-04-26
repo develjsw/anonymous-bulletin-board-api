@@ -1,15 +1,21 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaMasterClientService } from '../../../../shared/prisma/service/prisma-master-client.service';
-import { comments as CommentModel, Prisma } from '../../../../../prisma/generated/master-client';
+import { Prisma } from '../../../../../prisma/generated/master-client';
+import { CommentCreateCommandInterface } from '../../interface/comment-create-command.interface';
+import { CommentEntity } from '../../entity/comment.entity';
 
 @Injectable()
-export class CreateCommentCommand {
+export class CreateCommentCommand implements CommentCreateCommandInterface {
     constructor(private readonly prismaMasterClientService: PrismaMasterClientService) {}
 
     async createComment(
-        data: Omit<Prisma.commentsUncheckedCreateInput, 'commentId'>,
+        data: {
+            postId: number;
+            writer: string;
+            content: string;
+        },
         transaction?: Prisma.TransactionClient
-    ): Promise<CommentModel> {
+    ): Promise<CommentEntity> {
         const prisma: Prisma.TransactionClient = transaction ?? this.prismaMasterClientService;
 
         try {

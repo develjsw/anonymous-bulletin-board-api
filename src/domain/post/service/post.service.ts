@@ -1,15 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { GetPostQuery } from '../repository/query/get-post.query';
 import { GetPostsDto } from '../dto/get-posts.dto';
 import { ListResponseType } from '../../../shared/type/list-response.type';
-import { posts as PostModel } from '../../../../prisma/generated/master-client';
 import { CreatePostDto } from '../dto/create-post.dto';
 import { CreatePostCommand } from '../repository/command/create-post.command';
 import { UpdatePostDto } from '../dto/update-post.dto';
 import { UpdatePostCommand } from '../repository/command/update-post.command';
 import { DeletePostDto } from '../dto/delete-post.dto';
 import { DeletePostCommand } from '../repository/command/delete-post.command';
-import { KeywordAlertService } from '../../keyword_alert/service/keyword-alert.service';
+import { PostEntity } from '../entity/post.entity';
+import { plainToInstance } from 'class-transformer';
+import { KEYWORD_ALERT_SERVICE } from '../../keyword_alert/constant/keyword-alert.constant';
+import { KeywordAlertServiceInterface } from '../../keyword_alert/interface/keyword-alert-service.interface';
 
 @Injectable()
 export class PostService {
@@ -19,23 +21,24 @@ export class PostService {
         private readonly updatePostCommand: UpdatePostCommand,
         private readonly deletePostCommand: DeletePostCommand,
 
-        // TODO : DIP 적용 필요
-        private readonly keywordAlertService: KeywordAlertService
+        @Inject(KEYWORD_ALERT_SERVICE)
+        private readonly keywordAlertService: KeywordAlertServiceInterface
     ) {}
 
-    async getPostsWithPaging(dto: GetPostsDto): Promise<ListResponseType<PostModel>> {
+    async getPostsWithPaging(dto: GetPostsDto): Promise<ListResponseType<PostEntity>> {
         const { page, perPage, ...post } = dto;
 
-        return await this.getPostQuery.findPostsByConditionsWithPaging(post, {
+        return await this.getPostQuery.findPostsWithPaging(plainToInstance(PostEntity, post), {
             page,
             perPage
         });
     }
 
     async createPost(dto: CreatePostDto): Promise<void> {
-        const createPostResult: PostModel = await this.createPostCommand.createPost(dto);
+        const createPostResult: PostEntity = await this.createPostCommand.createPost(plainToInstance(PostEntity, dto));
         const { postId, title, content } = createPostResult;
 
+        // 키워드 알림 등록
         const text = `${title}\n${content}`;
         await this.keywordAlertService.sendAlertForText(text, {
             type: 'post',
@@ -46,12 +49,12 @@ export class PostService {
     async updatePost(postId: number, dto: UpdatePostDto): Promise<void> {
         const { password, ...post } = dto;
 
-        await this.updatePostCommand.updatePostByIdAndPassword(postId, password, post);
+        await this.updatePostCommand.updatePost(postId, password, post);
     }
 
     async deletePost(postId: number, dto: DeletePostDto): Promise<void> {
         const { password } = dto;
 
-        await this.deletePostCommand.deletePostByIdAndPassword(postId, password);
+        await this.deletePostCommand.deletePost(postId, password);
     }
 }

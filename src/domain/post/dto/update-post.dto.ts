@@ -1,6 +1,5 @@
 import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
-// TODO : 유효성 검증 - 모두 빈값인 경우
 export class UpdatePostDto {
     @IsOptional()
     @IsString()
@@ -10,7 +9,7 @@ export class UpdatePostDto {
     @IsString()
     content: string;
 
-    // TODO : 작성자도 수정 가능한지?
+    // 작성자는 수정 불가능하다고 가정
 
     @IsNotEmpty()
     @IsString()

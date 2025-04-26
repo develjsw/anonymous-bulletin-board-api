@@ -3,24 +3,24 @@ import { CreateCommentDto } from '../dto/create-comment.dto';
 import { CommentService } from '../service/comment.service';
 import { GetCommentsDto } from '../dto/get-comments.dto';
 import { ListResponseType } from '../../../shared/type/list-response.type';
-import { comments as CommentModel } from '../../../../prisma/generated/master-client';
+import { CommentEntity } from '../entity/comment.entity';
 
-@Controller('posts/:pid/comments')
+@Controller('posts/:postId/comments')
 export class PostCommentController {
     constructor(private readonly commentService: CommentService) {}
 
     // 댓글 작성
     @Post()
-    async createComment(@Param('pid', ParseIntPipe) postId: number, @Body() dto: CreateCommentDto): Promise<void> {
+    async createComment(@Param('postId', ParseIntPipe) postId: number, @Body() dto: CreateCommentDto): Promise<void> {
         await this.commentService.createComment(postId, dto);
     }
 
     // 특정 게시글의 댓글 목록
     @Get()
     async getCommentsWithPaging(
-        @Param('pid', ParseIntPipe) postId: number,
+        @Param('postId', ParseIntPipe) postId: number,
         @Query() dto: GetCommentsDto
-    ): Promise<ListResponseType<CommentModel>> {
+    ): Promise<ListResponseType<CommentEntity>> {
         return await this.commentService.getCommentsWithPaging(postId, dto);
     }
 }

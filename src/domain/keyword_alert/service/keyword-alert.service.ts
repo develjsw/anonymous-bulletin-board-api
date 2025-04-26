@@ -1,18 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { GetKeywordAlertQuery } from '../repository/query/get-keyword-alert.query';
-import { keyword_alerts as KeywordAlertModel } from '../../../../prisma/generated/master-client';
-
-interface AlertMeta {
-    type: 'post' | 'comment';
-    id: number;
-}
+import { KeywordAlertEntity } from '../entity/keyword-alert.entity';
+import { KeywordAlertServiceInterface } from '../interface/keyword-alert-service.interface';
+import { AlertMeta } from '../type/alert-meta.type';
 
 @Injectable()
-export class KeywordAlertService {
+export class KeywordAlertService implements KeywordAlertServiceInterface {
     constructor(private readonly getKeywordAlertQuery: GetKeywordAlertQuery) {}
 
     async sendAlertForText(text: string, meta: AlertMeta): Promise<void> {
-        const findKeywordAlertsResult: KeywordAlertModel[] = await this.getKeywordAlertQuery.findKeywordAlerts();
+        const findKeywordAlertsResult: KeywordAlertEntity[] = await this.getKeywordAlertQuery.findKeywordAlerts();
 
         for (const { writer, keyword } of findKeywordAlertsResult) {
             if (text.includes(keyword)) {

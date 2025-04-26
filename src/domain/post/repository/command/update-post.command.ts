@@ -1,15 +1,16 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaMasterClientService } from '../../../../shared/prisma/service/prisma-master-client.service';
 import { Prisma } from '../../../../../prisma/generated/master-client';
+import { PostUpdateCommandInterface } from '../../interface/post-update-command.interface';
 
 @Injectable()
-export class UpdatePostCommand {
+export class UpdatePostCommand implements PostUpdateCommandInterface {
     constructor(private readonly prismaMasterClientService: PrismaMasterClientService) {}
 
-    async updatePostByIdAndPassword(
+    async updatePost(
         postId: number,
         password: string,
-        data: Omit<Prisma.postsUpdateInput, 'postId' | 'password'>,
+        data: { title?: string; content?: string },
         transaction?: Prisma.TransactionClient
     ): Promise<void> {
         const prisma: Prisma.TransactionClient = transaction ?? this.prismaMasterClientService;

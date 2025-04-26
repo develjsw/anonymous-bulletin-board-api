@@ -7,8 +7,8 @@ export class CommentController {
     constructor(private readonly commentService: CommentService) {}
 
     // 대댓글 작성
-    @Post(':pid/replies')
-    async createCommentReply(@Param('pid', ParseIntPipe) parentId: number, @Body() dto: CreateCommentReplyDto) {
+    @Post(':parentId/replies')
+    async createCommentReply(@Param('parentId', ParseIntPipe) parentId: number, @Body() dto: CreateCommentReplyDto) {
         await this.commentService.createCommentReply(parentId, dto);
     }
 }

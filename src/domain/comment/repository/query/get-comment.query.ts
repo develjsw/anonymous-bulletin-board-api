@@ -1,14 +1,16 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaMasterClientService } from '../../../../shared/prisma/service/prisma-master-client.service';
-import { comments as CommentModel, Prisma } from '../../../../../prisma/generated/master-client';
+import { Prisma } from '../../../../../prisma/generated/master-client';
 import { PagingType } from '../../../../shared/type/paging.type';
 import { ListResponseType } from '../../../../shared/type/list-response.type';
+import { CommentQueryInterface } from '../../interface/comment-query.interface';
+import { CommentEntity } from '../../entity/comment.entity';
 
 @Injectable()
-export class GetCommentQuery {
+export class GetCommentQuery implements CommentQueryInterface {
     constructor(private readonly prismaMasterClientService: PrismaMasterClientService) {}
 
-    async findCommentById(commentId: number): Promise<CommentModel> {
+    async findCommentById(commentId: number): Promise<CommentEntity> {
         return this.prismaMasterClientService.comments.findUnique({
             where: {
                 commentId
@@ -16,7 +18,7 @@ export class GetCommentQuery {
         });
     }
 
-    async findCommentsByPostIdWithPaging(postId: number, paging: PagingType): Promise<ListResponseType<CommentModel>> {
+    async findCommentsWithPaging(postId: number, paging: PagingType): Promise<ListResponseType<CommentEntity>> {
         const { page, perPage } = paging;
 
         const where = {
@@ -24,7 +26,7 @@ export class GetCommentQuery {
             parentId: null // 대댓글 제외
         };
 
-        const list: CommentModel[] = await this.prismaMasterClientService.comments.findMany({
+        const list: CommentEntity[] = await this.prismaMasterClientService.comments.findMany({
             where,
             skip: (page - 1) * perPage,
             take: perPage,

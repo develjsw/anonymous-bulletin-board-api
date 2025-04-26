@@ -1,16 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaMasterClientService } from '../../../../shared/prisma/service/prisma-master-client.service';
 import { Prisma } from '../../../../../prisma/generated/master-client';
+import { PostDeleteCommandInterface } from '../../interface/post-delete-command.interface';
 
 @Injectable()
-export class DeletePostCommand {
+export class DeletePostCommand implements PostDeleteCommandInterface {
     constructor(private readonly prismaMasterClientService: PrismaMasterClientService) {}
 
-    async deletePostByIdAndPassword(
-        postId: number,
-        password: string,
-        transaction?: Prisma.TransactionClient
-    ): Promise<void> {
+    async deletePost(postId: number, password: string, transaction?: Prisma.TransactionClient): Promise<void> {
         const prisma: Prisma.TransactionClient = transaction ?? this.prismaMasterClientService;
 
         const { count } = await prisma.posts.deleteMany({
