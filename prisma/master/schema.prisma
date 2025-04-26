@@ -10,19 +10,19 @@ datasource db {
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
 model comments {
-  commentId      Int        @id @default(autoincrement()) @db.UnsignedInt
-  postId         Int        @db.UnsignedInt
-  parentId       Int?       @db.UnsignedInt
-  writer         String     @default("") @db.VarChar(50)
-  content        String     @default("") @db.VarChar(200)
-  createdAt      DateTime   @default(now()) @db.DateTime(0)
-  posts          posts      @relation(fields: [postId], references: [postId], onDelete: Cascade, onUpdate: NoAction, map: "comments_ibfk_1")
-
-  parent       comments?  @relation("CommentReplies", fields: [parentId], references: [commentId], onDelete: Cascade, onUpdate: NoAction)
-  replies      comments[] @relation("CommentReplies")
+  commentId Int        @id @default(autoincrement()) @db.UnsignedInt
+  postId    Int        @db.UnsignedInt
+  parentId  Int?       @db.UnsignedInt
+  writer    String     @default("") @db.VarChar(50)
+  content   String     @default("") @db.VarChar(200)
+  createdAt DateTime   @default(now()) @db.DateTime(0)
+  posts     posts      @relation(fields: [postId], references: [postId], onDelete: Cascade, onUpdate: NoAction, map: "comments_ibfk_1")
+  parent    comments?  @relation("CommentReplies", fields: [parentId], references: [commentId], onDelete: Cascade, onUpdate: NoAction, map: "comments_ibfk_2")
+  replies   comments[] @relation("CommentReplies")
 
   @@index([parentId], map: "parentId")
   @@index([postId], map: "postId")
+  @@fulltext([content], map: "ft_comments_content")
 }
 
 /// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
@@ -47,4 +47,5 @@ model posts {
 
   @@index([title], map: "idx_title")
   @@index([writer], map: "idx_writer")
+  @@fulltext([title, content], map: "ft_posts_title_content")
 }
